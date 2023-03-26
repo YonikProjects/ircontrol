@@ -3,15 +3,8 @@ path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
 
-// const projectorPort = new SerialPort({
-//   path: "COM4",
-//   baudRate: 9600,
-//   dataBits: 8,
-//   parity: "none",
-//   stopBits: 1,
-//   autoOpen: false,
-// });
-
+let profileData;
+let settingsData;
 ipcMain.handle("console", (event, line) => {
   if (line === "quit") {
     console.log("quitting");
@@ -23,6 +16,14 @@ ipcMain.handle("console", (event, line) => {
 });
 
 function sendCommand(command) {
+  const projectorPort = new SerialPort({
+    path: "COM4",
+    baudRate: profileData.baudRate,
+    dataBits: 8,
+    parity: "none",
+    stopBits: 1,
+    autoOpen: false,
+  });
   projectorPort.write(command, (err) => {
     if (err) {
       console.error(`Error sending command "${command}":`, err);
@@ -38,12 +39,25 @@ ipcMain.handle("command", (event, line) => {
       console.error("Error opening projector port:", err);
     } else {
       switch (line) {
+        case "buttonOn": {
+          sendCommand(profileData.command.on);
+          break;
+        }
+        case "buttonOff": {
+          sendCommand(profileData.command.off);
+          break;
+        }
+        case "buttonVga": {
+          sendCommand(profileData.command.VGA);
+          break;
+        }
+        case "buttonHdmi": {
+          sendCommand(profileData.command.HDMI);
+          break;
+        }
         default:
           break;
-        case buttonOn: {
-        }
       }
-      sendCommand("PWR ON\x0D");
     }
   });
 
@@ -90,7 +104,7 @@ function initialize() {
     profileDb.set("profiles", [
       {
         name: "Epson",
-        baudRate: "9600",
+        baudRate: 9600,
         dataBits: 8,
         parity: "none",
         stopBits: 1,
@@ -104,9 +118,12 @@ function initialize() {
     ]);
     profileDb.set("initialized", true);
   }
+  settingsData = db.get("settings");
+  profileData = profileDb.get("profiles")[settingsData.profile];
+  console.log(settingsData);
   createWindow();
 }
-app.on("ready", createWindow);
+app.on("ready", initialize);
 
 app.on("window-all-closed", () => {
   app.quit();
