@@ -1,0 +1,31 @@
+{
+  "name": "ircontrol",
+  "productName": "ircontrol",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "npm i && electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": "cdima-mac",
+  "license": "MIT",
+  "dependencies": {
+    "@picocss/pico": "^1.5.7",
+    "electron-squirrel-startup": "^1.0.0",
+    "serialport": "^10.5.0",
+    "simple-json-db": "^2.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.5",
+    "@electron-forge/maker-deb": "^6.0.5",
+    "@electron-forge/maker-rpm": "^6.0.5",
+    "@electron-forge/maker-squirrel": "^6.0.5",
+    "@electron-forge/maker-zip": "^6.0.5",
+    "electron": "23.1.3"
+  }
+}

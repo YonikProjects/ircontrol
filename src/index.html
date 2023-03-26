@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="he" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>תוכנת שליטה במקרן</title>
+    <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.css" />
+  </head>
+
+  <body>
+    <main class="container">
+      <article>
+        <h6 style="text-align: center">שליטה במצב</h6>
+
+        <nav>
+          <ul>
+            <li><button id="buttonOn">הדלקה</button></li>
+          </ul>
+
+          <ul>
+            <li><button id="buttonOff">כיבוי</button></li>
+          </ul>
+        </nav>
+      </article>
+      <article>
+        <h6 style="text-align: center">החלפת חיבור</h6>
+        <button id="buttonVga">מחשב (VGA)</button>
+        <button id="buttonHdmi">Apple TV (HDMI)</button>
+      </article>
+
+      <footer>
+        <nav>
+          <ul>
+            <li>
+              <small> פותח ע״י דמיטרי פולשצ׳וק עבור מכללת גורדון @ 2023 </small>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <button id="settingsButton" role="button">⚙️</button>
+            </li>
+          </ul>
+        </nav>
+      </footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
