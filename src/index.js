@@ -25,7 +25,8 @@ ipcMain.handle("console", (event, line) => {
     console.log("quitting");
     app.closable = true;
     app.exit(0);
-  } else sendCommand(line);
+  }
+  sendCommand(line);
   console.log(`Received from frontend: ${line}`);
   return `Backend confirms it received: ${line}`;
 });
