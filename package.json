@@ -10,7 +10,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\"",
-    "upload": "git add . && git commit -m \"Fixes\" && git push origin main",
+    "upload": "git add . && git commit -m \"Fixed\" && git push origin main",
     "download": "git pull origin main"
   },
   "keywords": [],
