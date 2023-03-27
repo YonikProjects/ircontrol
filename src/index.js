@@ -33,55 +33,55 @@ ipcMain.handle("console", (event, line) => {
 });
 
 function sendCommand(command) {
-  console.log("Received command to send")
-  projectorPort.write(command, (err) => {
-    if (err) {
-      console.error(`Error sending command "${command}":`, err);
-    } else {
-      console.log(`Sent command: "${command}"`);
-    }
-  });
-  setTimeout(() => {
-    projectorPort.close((err) => {
-      if (err) {
-        console.error("Error closing projector port:", err);
-      } else {
-        console.log("Projector port closed");
-      }
-    });
-  }, 1000);
-}
-ipcMain.handle("command", (event, line) => {
-  console.log(`Received command from frontend: ${line}`);
+  console.log("Received command to send");
   projectorPort.open((err) => {
     if (err) {
       console.error("Error opening projector port:", err);
     } else {
-      switch (line) {
-        case "buttonOn": {
-          sendCommand(profileData.command.on);
-          break;
+      projectorPort.write(command, (err) => {
+        if (err) {
+          console.error(`Error sending command "${command}":`, err);
+        } else {
+          console.log(`Sent command: "${command}"`);
         }
-        case "buttonOff": {
-          sendCommand(profileData.command.off);
-          break;
-        }
-        case "buttonVga": {
-          sendCommand(profileData.command.VGA);
-          break;
-        }
-        case "buttonHdmi": {
-          sendCommand(profileData.command.HDMI);
-          break;
-        }
-        default:
-          break;
-      }
+      });
+      setTimeout(() => {
+        projectorPort.close((err) => {
+          if (err) {
+            console.error("Error closing projector port:", err);
+          } else {
+            console.log("Projector port closed");
+          }
+        });
+      }, 1000);
     }
   });
+}
+ipcMain.handle("command", (event, line) => {
+  console.log(`Received command from frontend: ${line}`);
+  switch (line) {
+    case "buttonOn": {
+      sendCommand(profileData.command.on);
+      break;
+    }
+    case "buttonOff": {
+      sendCommand(profileData.command.off);
+      break;
+    }
+    case "buttonVga": {
+      sendCommand(profileData.command.VGA);
+      break;
+    }
+    case "buttonHdmi": {
+      sendCommand(profileData.command.HDMI);
+      break;
+    }
+    default:
+      break;
+  }
 
   // Optional: Close the port after some time, e.g., 10 seconds
-  
+
   return `Backend confirms it received: ${line}`;
 });
 function createWindow() {
