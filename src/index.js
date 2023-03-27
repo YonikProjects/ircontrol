@@ -21,80 +21,82 @@ function refreshSettings() {
   });
   console.log("Setting have been loaded");
 }
-ipcMain.handle("console", (event, line) => {
-  if (line === "quit") {
-    console.log("quitting");
-    app.closable = true;
-    app.exit(0);
+ipcMain.handle("console", async (event, line) => {
+  try {
+    if (line === "quit") {
+      console.log("quitting");
+      app.closable = true;
+      app.exit(0);
+    } else await sendCommand(line);
+    console.log(`Received from frontend: ${line}`);
+    return `Backend confirms it received: ${line}`;
+  } catch (err) {
+    return `Backend confirms it errored: ${err}`;
   }
-  else
-  sendCommand(line);
-  console.log(`Received from frontend: ${line}`);
-  return `Backend confirms it received: ${line}`;
 });
 
 async function sendCommand(command) {
   await new Promise((resolve, reject) => {
-    ZK.connect((err) => {
-      if (err) reject(err);
-      else {
-        console.log(`Connected to ${ip}`);
-        resolve();
+    console.log("Received command to send");
+    projectorPort.open((err) => {
+      if (err) {
+        console.error("Error opening projector port:", err);
+        reject(err);
+      } else {
+        projectorPort.write(command, (err) => {
+          if (err) {
+            console.error(`Error sending command "${command}":`, err);
+            reject(err);
+          } else {
+            console.log(`Sent command: "${command}"`);
+          }
+        });
+        setTimeout(() => {
+          projectorPort.close((err) => {
+            if (err) {
+              console.error("Error closing projector port:", err);
+              reject(err);
+            } else {
+              console.log("Projector port closed");
+              resolve();
+            }
+          });
+        }, 1000);
       }
     });
   });
-  console.log("Received command to send");
-  projectorPort.open((err) => {
-    if (err) {
-      console.error("Error opening projector port:", err);
-      reject(err);
-    } else {
-      projectorPort.write(command, (err) => {
-        if (err) {
-          console.error(`Error sending command "${command}":`, err);
-        } else {
-          console.log(`Sent command: "${command}"`);
-        }
-      });
-      setTimeout(() => {
-        projectorPort.close((err) => {
-          if (err) {
-            console.error("Error closing projector port:", err);
-          } else {
-            console.log("Projector port closed");
-          }
-        });
-      }, 1000);
-    }
-  });
 }
-ipcMain.handle("command", (event, line) => {
+ipcMain.handle("command", async (event, line) => {
   console.log(`Received command from frontend: ${line}`);
-  switch (line) {
-    case "buttonOn": {
-      sendCommand(profileData.command.on);
-      break;
+  try {
+    switch (line) {
+      case "buttonOn": {
+        await sendCommand(profileData.command.on);
+        break;
+      }
+      case "buttonOff": {
+        await sendCommand(profileData.command.off);
+        break;
+      }
+      case "buttonVga": {
+        await sendCommand(profileData.command.VGA);
+        break;
+      }
+      case "buttonHdmi": {
+        await sendCommand(profileData.command.HDMI);
+        break;
+      }
+      default:
+        break;
     }
-    case "buttonOff": {
-      sendCommand(profileData.command.off);
-      break;
-    }
-    case "buttonVga": {
-      sendCommand(profileData.command.VGA);
-      break;
-    }
-    case "buttonHdmi": {
-      sendCommand(profileData.command.HDMI);
-      break;
-    }
-    default:
-      break;
+    return `Backend confirms it received: ${line}`;
+  } catch (err) {
+    return `Backend returned error : ${err}`;
   }
 
   // Optional: Close the port after some time, e.g., 10 seconds
-
-  return `Backend confirms it received: ${line}`;
 });
+ipcMain.handle("settings", async (event, line) => {})
 function createWindow() {
   let win = new BrowserWindow({
     // skipTaskbar: true,
@@ -141,10 +143,19 @@ function initialize() {
   refreshSettings();
   console.log(settingsData);
   createWindow();
+  SerialPort.list()
+    .then((ports) => {
+      console.log("Available serial ports:");
+      ports.forEach((port) => {
+        console.log(`- ${port.path}`);
+      });
+    })
+    .catch((err) => {
+      console.error("Error listing serial ports:", err);
+    });
 }
 app.on("ready", initialize);
 
 app.on("window-all-closed", () => {
   app.quit();
 });
-//test
