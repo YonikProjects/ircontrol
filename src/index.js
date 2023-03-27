@@ -33,11 +33,21 @@ ipcMain.handle("console", (event, line) => {
   return `Backend confirms it received: ${line}`;
 });
 
-function sendCommand(command) {
+async function sendCommand(command) {
+  await new Promise((resolve, reject) => {
+    ZK.connect((err) => {
+      if (err) reject(err);
+      else {
+        console.log(`Connected to ${ip}`);
+        resolve();
+      }
+    });
+  });
   console.log("Received command to send");
   projectorPort.open((err) => {
     if (err) {
       console.error("Error opening projector port:", err);
+      reject(err);
     } else {
       projectorPort.write(command, (err) => {
         if (err) {
