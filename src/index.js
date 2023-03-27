@@ -3,27 +3,42 @@ path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
 
+
+  const db = new JSONdb(path.join(process.cwd(), "config.json"));
+  const profileDb = new JSONdb(path.join(process.cwd(), "profile.json"));
 let profileData;
 let settingsData;
+let projectorPort;
+function refreshSettings(){settingsData = db.get("settings");
+  profileData = profileDb.get("profiles")[settingsData.profile];
+  projectorPort = new SerialPort({
+    path: settingsData.port,
+    baudRate: profileData.baudRate,
+    dataBits: profileData.dataBits,
+    parity: profileData.parity,
+    stopBits: profileData.stopBits,
+    // autoOpen: false,
+  });}
+  projectorPort.close((err) => {
+      if (err) {
+        console.error("Error closing projector port:", err);
+      } else {
+        console.log("Projector port closed");
+      }
+    });
 ipcMain.handle("console", (event, line) => {
   if (line === "quit") {
     console.log("quitting");
     app.closable = true;
     app.exit(0);
   }
+  else sendCommand(line)
   console.log(`Received from frontend: ${line}`);
   return `Backend confirms it received: ${line}`;
 });
 
 function sendCommand(command) {
-  const projectorPort = new SerialPort({
-    path: "COM4",
-    baudRate: profileData.baudRate,
-    dataBits: 8,
-    parity: "none",
-    stopBits: 1,
-    autoOpen: false,
-  });
+  
   projectorPort.write(command, (err) => {
     if (err) {
       console.error(`Error sending command "${command}":`, err);
@@ -70,7 +85,7 @@ ipcMain.handle("command", (event, line) => {
         console.log("Projector port closed");
       }
     });
-  }, 3000);
+  }, 1000);
   return `Backend confirms it received: ${line}`;
 });
 function createWindow() {
@@ -91,13 +106,11 @@ function createWindow() {
 }
 function initialize() {
   //Initializing config file
-  const db = new JSONdb(path.join(process.cwd(), "config.json"));
   if (!db.get("initialized")) {
     console.log("No config found, creating a new one");
     db.set("settings", { port: "COM1", profile: 0 });
     db.set("initialized", true);
   }
-  const profileDb = new JSONdb(path.join(process.cwd(), "profile.json"));
   //Initializing default profile
   if (!profileDb.get("initialized")) {
     console.log("No Profiles found, creating a new profile");
@@ -118,8 +131,7 @@ function initialize() {
     ]);
     profileDb.set("initialized", true);
   }
-  settingsData = db.get("settings");
-  profileData = profileDb.get("profiles")[settingsData.profile];
+  refreshSettings();
   console.log(settingsData);
   createWindow();
 }
