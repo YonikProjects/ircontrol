@@ -19,6 +19,7 @@ function refreshSettings() {
     stopBits: profileData.stopBits,
     autoOpen: false,
   });
+  console.log("Setting have been loaded");
 }
 ipcMain.handle("console", (event, line) => {
   if (line === "quit") {
@@ -32,6 +33,7 @@ ipcMain.handle("console", (event, line) => {
 });
 
 function sendCommand(command) {
+  console.log("Received command to send")
   projectorPort.write(command, (err) => {
     if (err) {
       console.error(`Error sending command "${command}":`, err);
@@ -39,6 +41,15 @@ function sendCommand(command) {
       console.log(`Sent command: "${command}"`);
     }
   });
+  setTimeout(() => {
+    projectorPort.close((err) => {
+      if (err) {
+        console.error("Error closing projector port:", err);
+      } else {
+        console.log("Projector port closed");
+      }
+    });
+  }, 1000);
 }
 ipcMain.handle("command", (event, line) => {
   console.log(`Received command from frontend: ${line}`);
@@ -70,15 +81,7 @@ ipcMain.handle("command", (event, line) => {
   });
 
   // Optional: Close the port after some time, e.g., 10 seconds
-  setTimeout(() => {
-    projectorPort.close((err) => {
-      if (err) {
-        console.error("Error closing projector port:", err);
-      } else {
-        console.log("Projector port closed");
-      }
-    });
-  }, 1000);
+  
   return `Backend confirms it received: ${line}`;
 });
 function createWindow() {
