@@ -1,25 +1,21 @@
 <!DOCTYPE html>
-<html lang="he" data-theme="dark">
+<html lang="he">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>הגדרות</title>
-    <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.css" />
+    <link rel="stylesheet" href="../node_modules/chota/dist/chota.min.css" />
   </head>
 
   <body>
-    <main class="container">
-      <nav>
-        <ul>
-          <li><strong>שליטה במקרן</strong></li>
-        </ul>
-        <ul>
-          <li>
-            <button onclick="location.href='index.html'" role="button">
-              🏠
-            </button>
-          </li>
-        </ul>
+    <div class="container">
+      <nav class="nav">
+        <div class="nav-left">
+          <a class="button" id="close">Exit</a>
+        </div>
+        <div class="nav-right">
+          <a class="button" onclick="location.href='index.html'"> 🏠 </a>
+        </div>
       </nav>
       <form>
         <input type="text" autofocus />
@@ -30,13 +26,7 @@
         <option value="" disabled selected>Select</option>
         <option>…</option>
       </select>
-      
-      <footer>
-        <h6 style="text-align: center">
-          פותח ע״י דמיטרי פולשצ׳וק עבור מכללת גורדון @ 2023
-        </h6>
-      </footer>
-    </main>
+    </div>
     <script src="settings.js"></script>
   </body>
 </html>

@@ -1,48 +1,62 @@
 <!DOCTYPE html>
-<html lang="he" data-theme="dark">
+<html lang="he">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>תוכנת שליטה במקרן</title>
-    <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.css" />
+    <link rel="stylesheet" href="../node_modules/chota/dist/chota.min.css" />
+    <style>
+      body.dark {
+        --bg-color: #000;
+        --bg-secondary-color: #131316;
+        --font-color: #f5f5f5;
+        --color-grey: #ccc;
+        --color-darkGrey: #777;
+      }
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
   </head>
 
-  <body>
-    <main class="container">
-      <article>
-        <h6 style="text-align: center">שליטה במצב</h6>
-
-        <nav>
-          <ul>
-            <li><button class="warning" id="buttonOn">הדלקה</button></li>
-          </ul>
-
-          <ul>
-            <li><button id="buttonOff">כיבוי</button></li>
-          </ul>
-        </nav>
-      </article>
-      <article>
-        <h6 style="text-align: center">החלפת חיבור</h6>
-        <button id="buttonVga">משדר אלחוטי (VGA)</button>
-        <button id="buttonHdmi">מחשב (HDMI)</button>
-      </article>
-
-      <footer>
-        <nav>
-          <ul>
-            <li>
-              <small> פותח ע״י דמיטרי פולשצ׳וק עבור מכללת גורדון @ 2023 </small>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <button id="settingsButton" role="button">⚙️</button>
-            </li>
-          </ul>
-        </nav>
-      </footer>
-    </main>
+  <body class="dark">
+    <div class="container">
+      <nav class="nav">
+        <div class="nav-left">
+          <a class="button success" id="buttonOn">הדלקה</a>
+        </div>
+        <div class="nav-center">
+          <a class="brand">
+            <img src="img/slogo.png" alt="" />
+          </a>
+        </div>
+        <div class="nav-right">
+          <a class="button error" id="buttonOff">כיבוי</a>
+        </div>
+      </nav>
+      <div class="row">
+        <div class="col">
+          <a class="button is-center" id="buttonVga">משדר אלחוטי (VGA)</a>
+        </div>
+        <div class="col">
+          <a class="button is-center" id="buttonHdmi">מחשב (HDMI)</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <nav class="nav">
+        <div class="nav-left"></div>
+        <div class="nav-center">
+          <small> פותח ע״י דמיטרי פולשצ׳וק עבור מכללת גורדון @ 2023 </small>
+        </div>
+        <div class="nav-right">
+          <a class="button" id="settingsButton" role="button">⚙️</a>
+        </div>
+      </nav>
+    </div>
     <script src="app.js"></script>
   </body>
 </html>

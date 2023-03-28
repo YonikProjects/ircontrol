@@ -96,15 +96,15 @@ ipcMain.handle("command", async (event, line) => {
 
   // Optional: Close the port after some time, e.g., 10 seconds
 });
-ipcMain.handle("settings", async (event, line) => {})
+ipcMain.handle("settings", async (event, line) => {});
 function createWindow() {
   let win = new BrowserWindow({
     // skipTaskbar: true,
-    height: 720,
-    width: 400,
+    height: 230,
+    width: 500,
     closable: false,
     maximizable: false,
-    resizable: false,
+    // resizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
