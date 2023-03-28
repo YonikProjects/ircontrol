@@ -7,7 +7,7 @@
     "publish": false
   },
   "hooks": {
-    "after:git:release": "npm run make",
+    "after:bump": "npm run make",
     "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   }
 }
