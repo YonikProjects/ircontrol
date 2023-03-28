@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
+const isDev = require("electron-is-dev");
 
 const db = new JSONdb(path.join(process.cwd(), "config.json"));
 const profileDb = new JSONdb(path.join(process.cwd(), "profile.json"));
@@ -170,3 +171,9 @@ app.on("ready", initialize);
 app.on("window-all-closed", () => {
   app.quit();
 });
+
+if (!isDev) {
+  app.setLoginItemSettings({
+    openAtLogin: true,
+  });
+}
