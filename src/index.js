@@ -3,7 +3,7 @@ const path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
 const isDev = require("electron-is-dev");
-//bash
+
 const server = "https://ircontrol-updater.vercel.app";
 const url = `${server}/update/${process.platform}/${app.getVersion()}`;
 
