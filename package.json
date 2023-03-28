@@ -15,7 +15,8 @@
     "download": "git pull origin main",
     "git:commit": "git-cz",
     "git:sync": "git pull --rebase origin main && git push origin main",
-    "release": "release-it"
+    "release": "release-it",
+    "releasev": "release-it --verbose"
   },
   "config": {
     "commitizen": {
