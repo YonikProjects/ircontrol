@@ -1,6 +1,7 @@
 {
   "github": {
     "release": true,
+    "releaseName": "v${version}",
     "assets": ["out/make/squirrel.windows/x64/*"]
   },
   "npm": {
