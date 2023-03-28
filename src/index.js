@@ -107,7 +107,7 @@ ipcMain.handle("settings", async (event, line) => {
     }
     default: {
       if ("setPort" in line) {
-        db.set(port, line.setPort);
+        db.set("port", line.setPort);
         console.log("setting port", line.setPort);
         refreshSettings();
       }
@@ -121,13 +121,13 @@ function createWindow() {
     width: 500,
     closable: false,
     maximizable: false,
-    // resizable: false,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-  // win.setMenuBarVisibility(false);
+  win.setMenuBarVisibility(false);
   win.loadFile("src/frontend/index.html");
 }
 
