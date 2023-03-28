@@ -11,7 +11,7 @@
     "publish": "electron-forge publish",
     "lint": "eslint src",
     "test": "jest",
-    "upload": "git add . && git commit -m \"Fixed\" && git push origin main",
+    "upload": "git add . && git commit -m \"Fixed\" && npm run git:sync",
     "download": "git pull origin main",
     "git:commit": "git-cz",
     "git:sync": "git pull --rebase origin main && git push origin main"
