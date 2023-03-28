@@ -1,7 +1,7 @@
 {
   "name": "icontrol",
   "productName": "iControl",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Control Projectors over Serial",
   "main": "src/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "git:commit": "git-cz",
     "git:sync": "git pull --rebase origin main && git push origin main",
     "release": "release-it",
-    "releasev": "release-it --verbose"
+    "releasev": "release-it --verbose --dry-run"
   },
   "config": {
     "commitizen": {
