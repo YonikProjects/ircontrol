@@ -1,8 +1,13 @@
 {
   "github": {
-    "release": true
+    "release": true,
+    "assets": ["out/make/*.exe"]
   },
   "npm": {
     "publish": false
+  },
+  "hooks": {
+    "after:git:release": "npm run make",
+    "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   }
 }
