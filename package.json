@@ -26,6 +26,10 @@
   "keywords": [],
   "author": "cdima-mac",
   "license": "MIT",
+  "dependencies": {
+    "serialport": "^10.5.0",
+    "simple-json-db": "^2.0.0"
+  },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",
     "@electron-forge/maker-deb": "^6.0.5",
