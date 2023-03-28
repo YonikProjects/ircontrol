@@ -1,8 +1,13 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, autoUpdater } = require("electron");
 const path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
 const isDev = require("electron-is-dev");
+
+const server = "https://i-control-app-git-main-yonikprojects.vercel.app/";
+const url = `${server}/update/${process.platform}/${app.getVersion()}`;
+
+autoUpdater.setFeedURL({ url });
 
 const db = new JSONdb(path.join(process.cwd(), "config.json"));
 const profileDb = new JSONdb(path.join(process.cwd(), "profile.json"));
