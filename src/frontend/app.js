@@ -3,8 +3,7 @@ let { ipcRenderer } = require("electron");
 const button = document.getElementById("settingsButton");
 
 async function sendCommand(event) {
-  console.log(event.target.id);
-  let responseText = await ipcRenderer.invoke("command", event.target.id);
+  await ipcRenderer.invoke("command", event.target.id);
 }
 function buttonClicked(event) {
   console.log(event);

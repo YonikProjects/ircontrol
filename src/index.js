@@ -1,5 +1,5 @@
-let { app, BrowserWindow, ipcMain } = require("electron");
-path = require("path");
+const { app, BrowserWindow, ipcMain } = require("electron");
+const path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
 
@@ -7,6 +7,8 @@ const db = new JSONdb(path.join(process.cwd(), "config.json"));
 const profileDb = new JSONdb(path.join(process.cwd(), "profile.json"));
 let profileData;
 let projectorPort;
+let settingsPort;
+let settingProfile;
 function refreshSettings() {
   settingsPort = db.get("port");
   settingProfile = db.get("profile");
