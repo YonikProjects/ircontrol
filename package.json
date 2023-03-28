@@ -24,9 +24,7 @@
   "keywords": [],
   "author": "cdima-mac",
   "license": "MIT",
-  "dependencies": {
-    "update-electron-app": "^2.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",
     "@electron-forge/maker-deb": "^6.0.5",
