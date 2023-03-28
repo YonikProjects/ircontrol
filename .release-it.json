@@ -10,7 +10,7 @@
   "hooks": {
     "after:bump": [
       "npm run make",
-      "copy out/make/squirrel.windows/x64/*.exe /out"
+      "xcopy out/make/squirrel.windows/x64/*.exe /out"
     ],
     "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   }
