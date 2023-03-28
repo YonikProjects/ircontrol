@@ -6,13 +6,13 @@ const { SerialPort } = require("serialport");
 const db = new JSONdb(path.join(process.cwd(), "config.json"));
 const profileDb = new JSONdb(path.join(process.cwd(), "profile.json"));
 let profileData;
-let settingsData;
 let projectorPort;
 function refreshSettings() {
-  settingsData = db.get("settings");
-  profileData = profileDb.get("profiles")[settingsData.profile];
+  settingsPort = db.get("port");
+  settingProfile = db.get("profile");
+  profileData = profileDb.get("profiles")[settingProfile];
   projectorPort = new SerialPort({
-    path: settingsData.port,
+    path: settingsPort,
     baudRate: profileData.baudRate,
     dataBits: profileData.dataBits,
     parity: profileData.parity,
@@ -96,7 +96,24 @@ ipcMain.handle("command", async (event, line) => {
 
   // Optional: Close the port after some time, e.g., 10 seconds
 });
-ipcMain.handle("settings", async (event, line) => {});
+ipcMain.handle("settings", async (event, line) => {
+  console.log(line);
+  switch (line) {
+    case "listPorts": {
+      return await SerialPort.list();
+    }
+    case "currentPort": {
+      return settingsPort;
+    }
+    default: {
+      if ("setPort" in line) {
+        db.set(port, line.setPort);
+        console.log("setting port", line.setPort);
+        refreshSettings();
+      }
+    }
+  }
+});
 function createWindow() {
   let win = new BrowserWindow({
     // skipTaskbar: true,
@@ -110,14 +127,16 @@ function createWindow() {
       contextIsolation: false,
     },
   });
-  win.setMenuBarVisibility(false);
+  // win.setMenuBarVisibility(false);
   win.loadFile("src/frontend/index.html");
 }
+
 function initialize() {
   //Initializing config file
   if (!db.get("initialized")) {
     console.log("No config found, creating a new one");
-    db.set("settings", { port: "COM1", profile: 0 });
+    db.set("port", "COM1");
+    db.set("profile", 0);
     db.set("initialized", true);
   }
   //Initializing default profile
@@ -141,18 +160,7 @@ function initialize() {
     profileDb.set("initialized", true);
   }
   refreshSettings();
-  console.log(settingsData);
   createWindow();
-  SerialPort.list()
-    .then((ports) => {
-      console.log("Available serial ports:");
-      ports.forEach((port) => {
-        console.log(`- ${port.path}`);
-      });
-    })
-    .catch((err) => {
-      console.error("Error listing serial ports:", err);
-    });
 }
 app.on("ready", initialize);
 
