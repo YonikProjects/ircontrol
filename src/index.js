@@ -121,6 +121,7 @@ function createWindow() {
     width: 500,
     closable: false,
     maximizable: false,
+    minimizable: false,
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
