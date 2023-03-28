@@ -1,7 +1,7 @@
 {
   "github": {
     "release": true,
-    "assets": ["out/make/*.exe"]
+    "assets": ["out/make/squirrel.windows/x64/*.exe"]
   },
   "npm": {
     "publish": false
