@@ -1,7 +1,7 @@
 {
   "name": "icontrol",
   "productName": "iControl",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Control Projectors over Serial",
   "main": "src/index.js",
   "scripts": {
