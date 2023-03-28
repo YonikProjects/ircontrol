@@ -111,7 +111,7 @@ function createWindow() {
     },
   });
   win.setMenuBarVisibility(false);
-  win.loadFile("src/index.html");
+  win.loadFile("src/frontend/index.html");
 }
 function initialize() {
   //Initializing config file
