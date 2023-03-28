@@ -1,13 +1,13 @@
 {
   "github": {
     "release": true,
-    "assets": ["./out/make/squirrel.windows/x64/*.exe"]
+    "assets": ["out/make/squirrel.windows/x64/*"]
   },
   "npm": {
     "publish": false
   },
   "hooks": {
-    "before:github:release": "npm run make",
+    "after:bump": "npm run make",
     "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   }
 }
