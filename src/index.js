@@ -4,7 +4,7 @@ const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
 const isDev = require("electron-is-dev");
 
-const server = "https://i-control-app-git-main-yonikprojects.vercel.app/";
+const server = "https://ircontrol-updater.vercel.app";
 const url = `${server}/update/${process.platform}/${app.getVersion()}`;
 
 autoUpdater.setFeedURL({ url });
