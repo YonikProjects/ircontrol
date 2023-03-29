@@ -1,10 +1,4 @@
-const {
-  app,
-  BrowserWindow,
-  ipcMain,
-  autoUpdater,
-  dialog,
-} = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
@@ -14,10 +8,7 @@ if (handleSquirrelEvent()) {
 }
 
 if (app.isPackaged) {
-  const server = "https://ircontrol-updater.vercel.app";
-  const url = `${server}/update/${process.platform}/${app.getVersion()}`;
-  autoUpdater.setFeedURL({ url });
-  require("update-electron-app")({ notifyUser: false });
+  require("update-electron-app")();
 }
 
 function handleSquirrelEvent() {
@@ -290,20 +281,6 @@ app.on("ready", initialize);
 
 app.on("window-all-closed", () => {
   app.quit();
-});
-autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
-  const dialogOpts = {
-    type: "info",
-    buttons: ["Restart", "Later"],
-    title: "Application Update",
-    message: process.platform === "win32" ? releaseNotes : releaseName,
-    detail:
-      "A new version has been downloaded. Restart the application to apply the updates.",
-  };
-
-  dialog.showMessageBox(dialogOpts).then((returnValue) => {
-    if (returnValue.response === 0) autoUpdater.quitAndInstall();
-  });
 });
 if (app.isPackaged) {
   app.setLoginItemSettings({
