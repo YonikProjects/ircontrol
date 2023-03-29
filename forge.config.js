@@ -10,7 +10,6 @@ module.exports = {
           owner: "YonikProjects",
           name: "ircontrol",
         },
-        authTokens: false,
         draft: false,
       },
     },
@@ -23,7 +22,7 @@ module.exports = {
     },
     {
       name: "@electron-forge/maker-zip",
-      platforms: ["darwin"],
+      platforms: ["win32"],
     },
     {
       name: "@electron-forge/maker-deb",

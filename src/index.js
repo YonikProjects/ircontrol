@@ -8,6 +8,10 @@ if (handleSquirrelEvent()) {
   return;
 }
 
+if (app.isPackaged) {
+  require("update-electron-app")({ notifyUser: false });
+}
+
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {
     return false;
