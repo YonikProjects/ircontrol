@@ -204,7 +204,7 @@ ipcMain.handle("settings", async (event, line) => {
 });
 function createWindow() {
   let win = new BrowserWindow({
-    skipTaskbar: true,
+    // skipTaskbar: true,
     height: 230,
     width: 500,
     closable: false,
@@ -216,7 +216,7 @@ function createWindow() {
       contextIsolation: false,
     },
   });
-  // win.setMenuBarVisibility(false);
+  win.setMenuBarVisibility(false);
   win.loadFile("src/frontend/index.html");
 }
 
