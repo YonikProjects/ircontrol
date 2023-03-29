@@ -1,3 +1,3 @@
 # iControl
 
-Remotely Control Projectors at your wish
+Remotely Control Projectors at your will. Please
