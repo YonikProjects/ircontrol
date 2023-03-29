@@ -10,7 +10,7 @@ module.exports = {
           owner: "YonikProjects",
           name: "ircontrol",
         },
-        authToken: "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",
+        authTokens: false,
         draft: false,
       },
     },

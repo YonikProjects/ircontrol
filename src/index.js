@@ -2,10 +2,6 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
-const isDev = require("electron-is-dev");
-if (app.isPackaged) {
-  require("update-electron-app")({ notifyUser: false });
-}
 
 if (handleSquirrelEvent()) {
   // squirrel event handled and app will exit in 1000ms, so don't do anything else
@@ -284,7 +280,7 @@ app.on("window-all-closed", () => {
   app.quit();
 });
 
-if (!isDev) {
+if (app.isPackaged) {
   app.setLoginItemSettings({
     openAtLogin: true,
   });
