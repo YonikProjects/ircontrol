@@ -8,7 +8,12 @@ if (handleSquirrelEvent()) {
 }
 
 if (app.isPackaged) {
-  require("update-electron-app")();
+  const { app, autoUpdater } = require("electron");
+
+  const server = "https://ircontrol-updater.vercel.app";
+  const url = `${server}/update/${process.platform}/${app.getVersion()}`;
+
+  autoUpdater.setFeedURL({ url });
 }
 
 function handleSquirrelEvent() {
