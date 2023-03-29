@@ -108,18 +108,16 @@ ipcMain.handle("settings", async (event, line) => {
   console.log(line);
   switch (line) {
     case "listPorts": {
-      console.log(await SerialPort.list());
       return await SerialPort.list();
     }
     case "currentPort": {
       return settingsPort;
     }
     case "listProfiles": {
-      console.log(profileDb.get("profiles"));
       return profileDb.get("profiles");
     }
     case "currentProfile": {
-      return settingProfile;
+      return profileDb.get("profiles")[settingProfile].name;
     }
     default: {
       if ("setPort" in line) {

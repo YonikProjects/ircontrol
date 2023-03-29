@@ -34,3 +34,33 @@ async function comInput() {
     location.reload();
   });
 }
+profileInput();
+async function profileInput() {
+  const select = document.querySelector("#profileSelect");
+  const currentProfile = await ipcRenderer.invoke("settings", "currentProfile");
+  console.log(currentProfile);
+  const optionElement = document.createElement("option");
+  optionElement.setAttribute("selected", "true");
+  optionElement.setAttribute("disabled", "true");
+  optionElement.setAttribute("hidden", "true");
+  optionElement.textContent = currentProfile;
+  select.appendChild(optionElement);
+  const data = await ipcRenderer.invoke("settings", "listProfiles");
+  if (data.length > 0) {
+    data.forEach((option, i) => {
+      const optionElement = document.createElement("option");
+      optionElement.textContent = option.name;
+      optionElement.value = i;
+      select.appendChild(optionElement);
+    });
+  } else {
+    const optionElement = document.createElement("option");
+    optionElement.textContent = "No Profiles found";
+    optionElement.setAttribute("disabled", "true");
+    select.appendChild(optionElement);
+  }
+  select.addEventListener("change", async () => {
+    await ipcRenderer.invoke("settings", { setProfile: select.value });
+    location.reload();
+  });
+}
