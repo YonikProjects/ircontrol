@@ -19,6 +19,7 @@ function refreshSettings() {
   settingsPort = db.get("port");
   settingProfile = db.get("profile");
   profileData = profileDb.get("profiles")[settingProfile];
+  console.log(settingProfile);
   projectorPort = new SerialPort({
     path: settingsPort,
     baudRate: profileData.baudRate,
@@ -105,7 +106,6 @@ ipcMain.handle("command", async (event, line) => {
   // Optional: Close the port after some time, e.g., 10 seconds
 });
 ipcMain.handle("settings", async (event, line) => {
-  console.log(line);
   switch (line) {
     case "listPorts": {
       return await SerialPort.list();
@@ -127,6 +127,7 @@ ipcMain.handle("settings", async (event, line) => {
       } else if ("setProfile" in line) {
         db.set("profile", line.setProfile);
         console.log("setting profile", line.setProfile);
+        refreshSettings();
       }
     }
   }
@@ -175,7 +176,7 @@ function initialize() {
         },
       },
       {
-        name: "Epson",
+        name: "Hitachi",
         baudRate: 9600,
         dataBits: 8,
         parity: "none",
@@ -185,6 +186,19 @@ function initialize() {
           off: "\x02POF\x03",
           HDMI: "\x02IIS:HD1\x03",
           VGA: "\x02IIS:RG1\x03",
+        },
+      },
+      {
+        name: "Sony",
+        baudRate: 9600,
+        dataBits: 8,
+        parity: "none",
+        stopBits: 1,
+        command: {
+          on: "\x02\x00\x00C00\x30\r",
+          off: "\x02\x00\x00C01\x31\r",
+          HDMI: "\x02\x00\x00C03\x33\r",
+          VGA: "\x02\x00\x00C02\x32\r",
         },
       },
     ]);
