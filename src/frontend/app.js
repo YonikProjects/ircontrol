@@ -13,7 +13,12 @@ function buttonClicked(event) {
     event.preventDefault();
   }
 }
-
+renderVersion();
+async function renderVersion() {
+  document.getElementById(
+    "version"
+  ).innerHTML = `<small>גרסה: ${await ipcRenderer.invoke("version")}</small>`;
+}
 button.addEventListener("click", buttonClicked);
 
 document.querySelector("#buttonOn").addEventListener("click", sendCommand);

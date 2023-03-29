@@ -202,6 +202,10 @@ ipcMain.handle("settings", async (event, line) => {
     }
   }
 });
+
+ipcMain.handle("version", async () => {
+  return app.getVersion();
+});
 function createWindow() {
   let win = new BrowserWindow({
     // skipTaskbar: true,
