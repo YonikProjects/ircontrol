@@ -13,7 +13,8 @@ if (app.isPackaged) {
   const server = "https://ircontrol-updater.vercel.app";
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
 
-  autoUpdater.setFeedURL({ url });
+  autoUpdater.setFeedURL(url);
+  autoUpdater.checkForUpdates();
 }
 
 function handleSquirrelEvent() {
