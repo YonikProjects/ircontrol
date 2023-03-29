@@ -16,7 +16,9 @@ if (app.isPackaged) {
   const server = "https://ircontrol-updater.vercel.app";
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
   autoUpdater.setFeedURL(url);
-  autoUpdater.checkForUpdates();
+  setInterval(() => {
+    autoUpdater.checkForUpdates();
+  }, 60000);
   autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
     const dialogOpts = {
       type: "info",
@@ -28,7 +30,11 @@ if (app.isPackaged) {
     };
 
     dialog.showMessageBox(dialogOpts).then((returnValue) => {
-      if (returnValue.response === 0) autoUpdater.quitAndInstall();
+      if (returnValue.response === 0) {
+        autoUpdater.quitAndInstall();
+        app.closable = true;
+        app.exit(0);
+      }
     });
   });
 }
