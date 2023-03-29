@@ -1,4 +1,10 @@
-const { app, BrowserWindow, ipcMain, autoUpdater } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  autoUpdater,
+  dialog,
+} = require("electron");
 const path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
@@ -286,7 +292,20 @@ app.on("ready", initialize);
 app.on("window-all-closed", () => {
   app.quit();
 });
+autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
+  const dialogOpts = {
+    type: "info",
+    buttons: ["Restart", "Later"],
+    title: "Application Update",
+    message: process.platform === "win32" ? releaseNotes : releaseName,
+    detail:
+      "A new version has been downloaded. Restart the application to apply the updates.",
+  };
 
+  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+    if (returnValue.response === 0) autoUpdater.quitAndInstall();
+  });
+});
 if (app.isPackaged) {
   app.setLoginItemSettings({
     openAtLogin: true,
