@@ -10,7 +10,6 @@ const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
 
 if (handleSquirrelEvent()) {
-  // squirrel event handled and app will exit in 1000ms, so don't do anything else
   return;
 }
 
