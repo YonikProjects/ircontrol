@@ -1,7 +1,7 @@
 {
   "name": "icontrol",
   "productName": "iControl",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "Control Projectors over Serial",
   "main": "src/index.js",
   "repository": "https://github.com/YonikProjects/ircontrol",
