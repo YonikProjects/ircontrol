@@ -8,8 +8,11 @@ if (handleSquirrelEvent()) {
 }
 
 if (app.isPackaged) {
-  const { app, autoUpdater } = require("electron");
-
+  const { autoUpdater } = require("electron");
+  autoUpdater.on("error", (message) => {
+    console.error("There was a problem updating the application");
+    console.error(message);
+  });
   const server = "https://ircontrol-updater.vercel.app";
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
 
@@ -224,6 +227,7 @@ function createWindow() {
   });
   win.setMenuBarVisibility(false);
   win.loadFile("src/frontend/index.html");
+  initialize();
 }
 
 function initialize() {
@@ -281,9 +285,8 @@ function initialize() {
     profileDb.set("initialized", true);
   }
   refreshSettings();
-  createWindow();
 }
-app.on("ready", initialize);
+app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
   app.quit();
