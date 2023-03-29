@@ -13,7 +13,7 @@ if (app.isPackaged) {
     console.error("There was a problem updating the application");
     console.error(message);
   });
-  const server = "https://ircontrol-updater.vercel.app";
+  const server = "https://ircontrol-updater-oxcgutzi0-yonikprojects.vercel.app";
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
   autoUpdater.setFeedURL(url);
   setInterval(() => {
