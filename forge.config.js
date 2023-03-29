@@ -2,7 +2,17 @@ module.exports = {
   packagerConfig: {
     icon: "./ico", // no file extension required
   },
-
+  publishers: [
+    {
+      name: "@electron-forge/publisher-github",
+      config: {
+        repository: {
+          owner: "YonikProjects",
+          name: "ircontrol",
+        },
+      },
+    },
+  ],
   rebuildConfig: {},
   makers: [
     {

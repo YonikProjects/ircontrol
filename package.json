@@ -4,6 +4,7 @@
   "version": "1.1.4",
   "description": "Control Projectors over Serial",
   "main": "src/index.js",
+  "repository": "https://github.com/YonikProjects/ircontrol",
   "scripts": {
     "start": "electron-forge start",
     "package": "npm i && electron-forge package",
@@ -27,11 +28,12 @@
   "author": "cdima-mac",
   "license": "MIT",
   "dependencies": {
-    "serialport": "^10.5.0",
-    "simple-json-db": "^2.0.0",
     "chota": "^0.9.2",
     "electron-is-dev": "^2.0.0",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "serialport": "^10.5.0",
+    "simple-json-db": "^2.0.0",
+    "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",
