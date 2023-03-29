@@ -16,7 +16,9 @@ if (app.isPackaged) {
   const server = "https://ircontrol-updater.vercel.app";
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
   autoUpdater.setFeedURL(url);
-  autoUpdater.checkForUpdates();
+  setInterval(() => {
+    autoUpdater.checkForUpdates();
+  }, 60000);
   autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
     const dialogOpts = {
       type: "info",
