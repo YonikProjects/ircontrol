@@ -2,13 +2,13 @@
   "github": {
     "release": true,
     "releaseName": "v${version}",
-    "assets": "E:/ircontrol/out/make/squirrel.windows/x64/*"
+    "assets": "/out/make/squirrel.windows/x64/*.exe"
   },
   "npm": {
     "publish": false
   },
   "hooks": {
-    "after:bump": ["npm run make"],
+    "after:bump": ["npm run make", "ls"],
     "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   }
 }

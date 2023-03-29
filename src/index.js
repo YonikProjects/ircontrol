@@ -108,16 +108,27 @@ ipcMain.handle("settings", async (event, line) => {
   console.log(line);
   switch (line) {
     case "listPorts": {
+      console.log(await SerialPort.list());
       return await SerialPort.list();
     }
     case "currentPort": {
       return settingsPort;
+    }
+    case "listProfiles": {
+      console.log(profileDb.get("profiles"));
+      return profileDb.get("profiles");
+    }
+    case "currentProfile": {
+      return settingProfile;
     }
     default: {
       if ("setPort" in line) {
         db.set("port", line.setPort);
         console.log("setting port", line.setPort);
         refreshSettings();
+      } else if ("setProfile" in line) {
+        db.set("profile", line.setProfile);
+        console.log("setting profile", line.setProfile);
       }
     }
   }
@@ -130,13 +141,13 @@ function createWindow() {
     closable: false,
     maximizable: false,
     minimizable: false,
-    resizable: false,
+    // resizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-  win.setMenuBarVisibility(false);
+  // win.setMenuBarVisibility(false);
   win.loadFile("src/frontend/index.html");
 }
 
