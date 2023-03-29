@@ -1,12 +1,12 @@
 {
   "github": {
-    "release": true,
-    "assets": ["out/make/squirrel.windows/64/*"]
+    "release": false
   },
   "npm": {
     "publish": false
   },
   "hooks": {
+    "after:bump": ["npm run publish"],
     "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   }
 }

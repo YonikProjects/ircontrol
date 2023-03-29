@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, autoUpdater } = require("electron");
 const path = require("path");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
@@ -9,6 +9,9 @@ if (handleSquirrelEvent()) {
 }
 
 if (app.isPackaged) {
+  const server = "https://ircontrol-updater.vercel.app";
+  const url = `${server}/update/${process.platform}/${app.getVersion()}`;
+  autoUpdater.setFeedURL({ url });
   require("update-electron-app")({ notifyUser: false });
 }
 
