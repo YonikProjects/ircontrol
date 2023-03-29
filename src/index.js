@@ -17,6 +17,11 @@ if (app.isPackaged) {
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
   autoUpdater.setFeedURL(url);
   autoUpdater.checkForUpdates();
+  autoUpdater.on("update-downloaded", () => {
+    autoUpdater.quitAndInstall();
+    app.closable = true;
+    app.exit(0);
+  });
 }
 
 function handleSquirrelEvent() {
