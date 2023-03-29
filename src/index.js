@@ -174,6 +174,19 @@ function initialize() {
           VGA: "SOURCE 11\x0D",
         },
       },
+      {
+        name: "Epson",
+        baudRate: 9600,
+        dataBits: 8,
+        parity: "none",
+        stopBits: 1,
+        command: {
+          on: "\x02PON\x03",
+          off: "\x02POF\x03",
+          HDMI: "\x02IIS:HD1\x03",
+          VGA: "\x02IIS:RG1\x03",
+        },
+      },
     ]);
     profileDb.set("initialized", true);
   }
