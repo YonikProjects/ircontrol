@@ -7,22 +7,22 @@ if (handleSquirrelEvent()) {
   return;
 }
 
-// if (app.isPackaged) {
-//   const { autoUpdater } = require("electron");
-//   autoUpdater.on("error", (message) => {
-//     console.error("There was a problem updating the application");
-//     console.error(message);
-//   });
-//   const server = "https://nuts.dmitrypol.com";
-//   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
-//   autoUpdater.setFeedURL(url);
-//   autoUpdater.checkForUpdates();
-//   autoUpdater.on("update-downloaded", () => {
-//     autoUpdater.quitAndInstall();
-//     app.closable = true;
-//     app.exit(0);
-//   });
-// }
+if (app.isPackaged) {
+  const { autoUpdater } = require("electron");
+  autoUpdater.on("error", (message) => {
+    console.error("There was a problem updating the application");
+    console.error(message);
+  });
+  const server = "https://iconfigupdate.vercel.app";
+  const url = `${server}/update/${process.platform}/${app.getVersion()}`;
+  autoUpdater.setFeedURL(url);
+  autoUpdater.checkForUpdates();
+  autoUpdater.on("update-downloaded", () => {
+    autoUpdater.quitAndInstall();
+    app.closable = true;
+    app.exit(0);
+  });
+}
 
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {
