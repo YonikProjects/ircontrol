@@ -18,7 +18,7 @@ if (app.isPackaged) {
   autoUpdater.setFeedURL(url);
   setInterval(() => {
     autoUpdater.checkForUpdates();
-  }, 60000);
+  }, 90000);
   autoUpdater.on("update-downloaded", () => {
     autoUpdater.quitAndInstall();
     app.closable = true;
