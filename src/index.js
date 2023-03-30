@@ -13,7 +13,7 @@ if (app.isPackaged) {
     console.error("There was a problem updating the application");
     console.error(message);
   });
-  const server = "https://iconfigupdate.vercel.app";
+  const server = "https://icontrol.vercel.app";
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
   autoUpdater.setFeedURL(url);
   setInterval(() => {
@@ -268,10 +268,10 @@ function initialize() {
         parity: "none",
         stopBits: 1,
         command: {
-          on: "\x02PON\x03",
-          off: "\x02POF\x03",
-          HDMI: "\x02IIS:HD1\x03",
-          VGA: "\x02IIS:RG1\x03",
+          on: "!PON\r",
+          off: "!POF\r",
+          HDMI: "!HD1\r",
+          VGA: "!RG1\r",
         },
       },
       {
