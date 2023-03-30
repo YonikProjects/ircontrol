@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const fs = require("fs");
 const JSONdb = require("simple-json-db");
 const { SerialPort } = require("serialport");
 
@@ -89,9 +90,12 @@ function handleSquirrelEvent() {
       return true;
   }
 }
-
-const db = new JSONdb(path.join(__dirname, "config.json"));
-const profileDb = new JSONdb(path.join(__dirname, "profile.json"));
+const configFolder = path.join(app.getPath("userData"), "config");
+if (!fs.existsSync(configFolder)) {
+  fs.mkdirSync(configFolder);
+}
+const db = new JSONdb(path.join(configFolder, "config.json"));
+const profileDb = new JSONdb(path.join(configFolder, "profile.json"));
 let profileData;
 let projectorPort;
 let settingsPort;
@@ -161,19 +165,27 @@ ipcMain.handle("command", async (event, line) => {
   try {
     switch (line) {
       case "buttonOn": {
-        await sendCommand(profileData.command.on);
+        if (profileData.hex)
+          await sendCommand(Buffer.from(profileData.command.on, "hex"));
+        else await sendCommand(profileData.command.on);
         break;
       }
       case "buttonOff": {
-        await sendCommand(profileData.command.off);
+        if (profileData.hex)
+          await sendCommand(Buffer.from(profileData.command.off, "hex"));
+        else await sendCommand(profileData.command.off);
         break;
       }
       case "buttonVga": {
-        await sendCommand(profileData.command.VGA);
+        if (profileData.hex)
+          await sendCommand(Buffer.from(profileData.command.VGA, "hex"));
+        else await sendCommand(profileData.command.VGA);
         break;
       }
       case "buttonHdmi": {
-        await sendCommand(profileData.command.HDMI);
+        if (profileData.hex)
+          await sendCommand(Buffer.from(profileData.command.HDMI, "hex"));
+        else await sendCommand(profileData.command.HDMI);
         break;
       }
       default:
@@ -258,20 +270,21 @@ function initialize() {
           on: "PWR ON\x0D",
           off: "PWR OFF\x0D",
           HDMI: "SOURCE A0\x0D",
-          VGA: "SOURCE 11\x0D",
+          VGA: "SOURCE 10\x0D",
         },
       },
       {
         name: "Hitachi",
-        baudRate: 9600,
+        baudRate: 19200,
         dataBits: 8,
         parity: "none",
+        hex: true,
         stopBits: 1,
         command: {
-          on: "\xBE\xEF\x03\x06\x00\xBA\xD2\x01\x00\x00\x60\x01\x00",
-          off: "\xBE\xEF\x03\x06\x00\xBA\xD2\x01\x00\x00\x60\x00\x00",
-          HDMI: "\xBE\xEF\x03\x06\x00\xBA\xD3\x01\x00\x00\x30\x00\x00",
-          VGA: "\xBE\xEF\x03\x06\x00\xBA\xD3\x01\x00\x00\x20\x00\x00",
+          on: "BEEF030600BAD2010000600100",
+          off: "BEEF0306002AD3010000600000",
+          HDMI: "BEEF0306000ED2010000200300",
+          VGA: "BEEF030600FED2010000200000",
         },
       },
       {
