@@ -11,7 +11,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish --platform=win32 ",
     "lint": "eslint src",
-    "upload": "git add . && git commit -m \"Fixed\" && release-it",
+    "upload": "git add . && git commit -m \"Fixed\" && release-it -- minor --ci",
     "download": "git pull origin main",
     "git:sync": "git pull --rebase origin main && git push origin main"
   },
