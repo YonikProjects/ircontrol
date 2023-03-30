@@ -88,8 +88,8 @@ function handleSquirrelEvent() {
   }
 }
 
-const db = new JSONdb(path.join(process.cwd(), "config.json"));
-const profileDb = new JSONdb(path.join(process.cwd(), "profile.json"));
+const db = new JSONdb(path.join(__dirname, "config.json"));
+const profileDb = new JSONdb(path.join(__dirname, "profile.json"));
 let profileData;
 let projectorPort;
 let settingsPort;
