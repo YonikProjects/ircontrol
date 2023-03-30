@@ -17,6 +17,7 @@ if (app.isPackaged) {
   const server = "https://icontrol.vercel.app";
   const url = `${server}/update/${process.platform}/${app.getVersion()}`;
   autoUpdater.setFeedURL(url);
+  autoUpdater.checkForUpdates();
   setInterval(() => {
     autoUpdater.checkForUpdates();
   }, 90000);
