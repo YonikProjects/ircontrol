@@ -268,10 +268,10 @@ function initialize() {
         parity: "none",
         stopBits: 1,
         command: {
-          on: Buffer.from("BE EF 03 06 00 BA D2 01 00 00 60 01 00", "hex"),
-          off: Buffer.from("BE EF 03 06 00 BA D2 01 00 00 60 00 00", "hex"),
-          HDMI: Buffer.from("BE EF 03 06 00 BA D3 01 00 00 30 00 00", "hex"),
-          VGA: Buffer.from("BE EF 03 06 00 BA D3 01 00 00 20 00 00", "hex"),
+          on: "\xBE\xEF\x03\x06\x00\xBA\xD2\x01\x00\x00\x60\x01\x00",
+          off: "\xBE\xEF\x03\x06\x00\xBA\xD2\x01\x00\x00\x60\x00\x00",
+          HDMI: "\xBE\xEF\x03\x06\x00\xBA\xD3\x01\x00\x00\x30\x00\x00",
+          VGA: "\xBE\xEF\x03\x06\x00\xBA\xD3\x01\x00\x00\x20\x00\x00",
         },
       },
       {
