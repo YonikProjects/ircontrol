@@ -1,102 +1,12 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
-const path = require("path");
-const fs = require("fs");
-const JSONdb = require("simple-json-db");
+const { app, ipcMain } = require("electron");
 const { SerialPort } = require("serialport");
+const updater = require("./updater");
+const installer = require("./installer");
+const { appHooks } = require("./window");
+const { db, profileDb } = require("./jsondb");
+updater.updater();
+installer.installer();
 
-if (handleSquirrelEvent()) {
-  return;
-}
-
-if (app.isPackaged) {
-  const { autoUpdater } = require("electron");
-  autoUpdater.on("error", (message) => {
-    console.error("There was a problem updating the application");
-    console.error(message);
-  });
-  const server = "https://icontrol.vercel.app";
-  const url = `${server}/update/${process.platform}/${app.getVersion()}`;
-  autoUpdater.setFeedURL(url);
-  autoUpdater.checkForUpdates();
-  setInterval(() => {
-    autoUpdater.checkForUpdates();
-  }, 90000);
-  autoUpdater.on("update-downloaded", () => {
-    autoUpdater.quitAndInstall();
-    app.closable = true;
-    app.exit(0);
-  });
-}
-
-function handleSquirrelEvent() {
-  if (process.argv.length === 1) {
-    return false;
-  }
-
-  const ChildProcess = require("child_process");
-  const path = require("path");
-
-  const appFolder = path.resolve(process.execPath, "..");
-  const rootAtomFolder = path.resolve(appFolder, "..");
-  const updateDotExe = path.resolve(path.join(rootAtomFolder, "Update.exe"));
-  const exeName = path.basename(process.execPath);
-
-  const spawn = function (command, args) {
-    let spawnedProcess;
-
-    try {
-      spawnedProcess = ChildProcess.spawn(command, args, { detached: true });
-    } catch (error) {
-      console.error(error);
-    }
-
-    return spawnedProcess;
-  };
-
-  const spawnUpdate = function (args) {
-    return spawn(updateDotExe, args);
-  };
-
-  const squirrelEvent = process.argv[1];
-  switch (squirrelEvent) {
-    case "--squirrel-install":
-    case "--squirrel-updated":
-      // Optionally do things such as:
-      // - Add your .exe to the PATH
-      // - Write to the registry for things like file associations and
-      //   explorer context menus
-
-      // Install desktop and start menu shortcuts
-      spawnUpdate(["--createShortcut", exeName]);
-
-      setTimeout(app.quit, 1000);
-      return true;
-
-    case "--squirrel-uninstall":
-      // Undo anything you did in the --squirrel-install and
-      // --squirrel-updated handlers
-
-      // Remove desktop and start menu shortcuts
-      spawnUpdate(["--removeShortcut", exeName]);
-
-      setTimeout(app.quit, 1000);
-      return true;
-
-    case "--squirrel-obsolete":
-      // This is called on the outgoing version of your app before
-      // we update to the new version - it's the opposite of
-      // --squirrel-updated
-
-      app.quit();
-      return true;
-  }
-}
-const configFolder = path.join(app.getPath("userData"), "config");
-if (!fs.existsSync(configFolder)) {
-  fs.mkdirSync(configFolder);
-}
-const db = new JSONdb(path.join(configFolder, "config.json"));
-const profileDb = new JSONdb(path.join(configFolder, "profile.json"));
 let profileData;
 let projectorPort;
 let settingsPort;
@@ -230,25 +140,8 @@ ipcMain.handle("settings", async (event, line) => {
 ipcMain.handle("version", async () => {
   return app.getVersion();
 });
-function createWindow() {
-  let win = new BrowserWindow({
-    // skipTaskbar: true,
-    height: 230,
-    width: 500,
-    closable: false,
-    maximizable: false,
-    minimizable: false,
-    resizable: false,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
-  win.setMenuBarVisibility(false);
-  win.loadFile("src/frontend/index.html");
-  initialize();
-}
-
+appHooks();
+initialize();
 function initialize() {
   //Initializing config file
   if (!db.get("initialized")) {
@@ -305,14 +198,4 @@ function initialize() {
     profileDb.set("initialized", true);
   }
   refreshSettings();
-}
-app.on("ready", createWindow);
-
-app.on("window-all-closed", () => {
-  app.quit();
-});
-if (app.isPackaged) {
-  app.setLoginItemSettings({
-    openAtLogin: true,
-  });
 }
