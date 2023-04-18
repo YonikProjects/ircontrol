@@ -1,6 +1,8 @@
 const { app } = require("electron");
+const installer = require("./installer");
 
 async function updater() {
+  await installer.installer();
   console.log("Updater started");
   if (app.isPackaged) {
     const { autoUpdater } = require("electron");

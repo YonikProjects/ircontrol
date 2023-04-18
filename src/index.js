@@ -1,11 +1,8 @@
 const { app, ipcMain } = require("electron");
 const { SerialPort } = require("serialport");
 const updater = require("./updater");
-const installer = require("./installer");
 const { appHooks } = require("./window");
-const { db, profileDb } = require("./jsondb");
-updater.updater();
-installer.installer();
+const { db, profileDb, aliasDb } = require("./jsondb");
 
 let profileData;
 let projectorPort;
@@ -26,6 +23,20 @@ function refreshSettings() {
   });
   console.log("Setting have been loaded");
 }
+ipcMain.handle("aliases", async () => {
+  try {
+    if (!aliasDb.get("initialized")) {
+      console.log("No config found, creating a new one");
+      aliasDb.set("VGA", "מחשב");
+      aliasDb.set("HDMI", "Apple TV");
+      aliasDb.set("initialized", true);
+    }
+
+    return aliasDb.JSON();
+  } catch (err) {
+    return `Backend confirms it errored: ${err}`;
+  }
+});
 ipcMain.handle("console", async (event, line) => {
   try {
     if (line === "quit") {
@@ -140,9 +151,9 @@ ipcMain.handle("settings", async (event, line) => {
 ipcMain.handle("version", async () => {
   return app.getVersion();
 });
-appHooks();
 initialize();
 function initialize() {
+  updater.updater();
   //Initializing config file
   if (!db.get("initialized")) {
     console.log("No config found, creating a new one");
@@ -198,4 +209,5 @@ function initialize() {
     profileDb.set("initialized", true);
   }
   refreshSettings();
+  appHooks();
 }

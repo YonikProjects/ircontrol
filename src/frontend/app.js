@@ -21,6 +21,14 @@ async function renderVersion() {
 }
 button.addEventListener("click", buttonClicked);
 
+getAliases();
+async function getAliases() {
+  let aliases = await ipcRenderer.invoke("aliases");
+  console.log(aliases);
+  document.getElementById("buttonVga").innerHTML = `${aliases.VGA} (VGA)`;
+  document.getElementById("buttonHdmi").innerHTML = `${aliases.HDMI} (HDMI)`;
+}
+
 document.querySelector("#buttonOn").addEventListener("click", sendCommand);
 document.querySelector("#buttonOff").addEventListener("click", sendCommand);
 document.querySelector("#buttonVga").addEventListener("click", sendCommand);

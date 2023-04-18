@@ -1,6 +1,6 @@
 const { app } = require("electron");
 
-function installer() {
+async function installer() {
   if (handleSquirrelEvent()) {
     return;
   }
@@ -17,7 +17,6 @@ function installer() {
     const rootAtomFolder = path.resolve(appFolder, "..");
     const updateDotExe = path.resolve(path.join(rootAtomFolder, "Update.exe"));
     const exeName = path.basename(process.execPath);
-
     const spawn = function (command, args) {
       let spawnedProcess;
 
