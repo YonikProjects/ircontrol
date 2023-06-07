@@ -1,4 +1,4 @@
-const { app, ipcMain } = require("electron");
+const { app, ipcMain, powerMonitor } = require("electron");
 const { SerialPort } = require("serialport");
 const updater = require("./updater");
 const { appHooks } = require("./window");
@@ -84,12 +84,24 @@ async function sendCommand(command) {
 }
 ipcMain.handle("command", async (event, line) => {
   console.log(`Received command from frontend: ${line}`);
+  await buttonPress(line);
+  // Optional: Close the port after some time, e.g., 10 seconds
+});
+async function buttonPress(line) {
   try {
     switch (line) {
       case "buttonOn": {
         if (profileData.hex)
           await sendCommand(Buffer.from(profileData.command.on, "hex"));
         else await sendCommand(profileData.command.on);
+        setInterval(() => {
+          const idleTime = powerMonitor.getSystemIdleTime();
+
+          if (idleTime >= 45 * 60) {
+            // User has been idle for 45 minutes, run the function
+            buttonPress("buttonOff");
+          }
+        }, 1000);
         break;
       }
       case "buttonOff": {
@@ -117,9 +129,7 @@ ipcMain.handle("command", async (event, line) => {
   } catch (err) {
     return `Backend returned error : ${err}`;
   }
-
-  // Optional: Close the port after some time, e.g., 10 seconds
-});
+}
 ipcMain.handle("settings", async (event, line) => {
   switch (line) {
     case "listPorts": {
