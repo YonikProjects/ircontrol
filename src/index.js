@@ -98,7 +98,7 @@ async function buttonPress(line) {
           const idleTime = powerMonitor.getSystemIdleTime();
 
           if (idleTime >= 45 * 60) {
-            // User has been idle for 45 minutes, run the function
+            // User has been idle for 45 minutes, run the function gonna fix it later
             buttonPress("buttonOff");
           }
         }, 1000);
