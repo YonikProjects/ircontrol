@@ -16,23 +16,23 @@
     "git:sync": "git pull --rebase origin main && git push origin main"
   },
   "keywords": [],
-  "author": "cdima-mac",
+  "author": "iControl",
   "license": "MIT",
   "dependencies": {
     "chota": "^0.9.2",
     "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
-    "serialport": "^10.5.0",
+    "serialport": "^11.0.0",
     "simple-json-db": "^2.0.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.1.1",
-    "@electron-forge/maker-squirrel": "^6.1.1",
-    "@electron-forge/maker-zip": "^6.1.1",
-    "@electron-forge/publisher-github": "^6.1.1",
-    "electron": "24.1.1",
-    "eslint": "^8.38.0",
-    "release-it": "^15.10.1",
-    "vm2": ">=3.9.18"
+    "@electron-forge/cli": "^6.2.1",
+    "@electron-forge/maker-squirrel": "^6.2.1",
+    "@electron-forge/maker-zip": "^6.2.1",
+    "@electron-forge/publisher-github": "^6.2.1",
+    "electron": "25.2.0",
+    "eslint": "^8.44.0",
+    "release-it": "^16.1.0",
+    "vm2": ">=3.9.19"
   }
 }
